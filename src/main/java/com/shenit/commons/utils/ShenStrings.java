@@ -44,14 +44,15 @@ public final class ShenStrings {
 	public static final String DELIMITER_DASH = "-";
 	public static final String DELIMITER_UNDERSCORE = "_";
 	public static final String LIKE_PATTERN = "%";
-	public static final String NULL_STR = "null";
+    public static final String NULL = "null";
+    public static final String FALSE = "false";
 	public static final String COLON = ":";
 	public static final String SEMICOLON = ";";
 	public static final String LINE_SEPERATOR = "\r\n";
 
 	public static final String ASTAR = "*";
-	
-	/**
+
+    /**
 	 * 把字符串中所有符合样式的字串替换replacement的内容.
 	 * @param source 原字串
 	 * @param replacement 替换字串

@@ -52,18 +52,16 @@ public final class GsonUtils {
 	private static final TypeToken<Map<String,Object>> MAP_TYPE = new TypeToken<Map<String,Object>>(){};
 	private static Map<Class<?>,Field<?>[]> REGISTERED_FIELDS = new HashMap<>();
 	private static final Gson CUSTOMIZED;
-	private static final Gson DEFAULT;
-	static{
-		CUSTOMIZED = createBuilder()
-				.registerTypeAdapter(Boolean.class, new BooleanDeserializer())
-				.registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),  new MapDeserializerDoubleAsIntFix())
-				.registerTypeAdapter(boolean.class, new BooleanDeserializer())
-				.registerTypeAdapter(Date.class,new DateDeserializer())
-				.registerTypeAdapter(Range.class,new RangeCodec())
-				.create();
-
-		DEFAULT = createBuilder().create();
-	}
+	static {
+        CUSTOMIZED = createBuilder()
+                .registerTypeAdapter(Boolean.class, new BooleanDeserializer())
+                .registerTypeAdapter(new TypeToken<Map<String, Object>>() {
+                }.getType(), new MapDeserializerDoubleAsIntFix())
+                .registerTypeAdapter(boolean.class, new BooleanDeserializer())
+                .registerTypeAdapter(Date.class, new DateDeserializer())
+                .registerTypeAdapter(Range.class, new RangeCodec())
+                .create();
+    }
 
 	private static final GsonBuilder createBuilder(){
 		return new GsonBuilder()
