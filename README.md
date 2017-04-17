@@ -1,2 +1,2 @@
-# java-common-utils2
-Common utils version 2
+# java-common-utils
+Java common utils for myself
