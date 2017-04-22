@@ -17,16 +17,15 @@
  **********************************************************************************************************************/
 package com.shenit.commons.mvc.model;
 
+import com.shenit.commons.utils.CollectionUtils;
+import com.shenit.commons.utils.GsonUtils;
+import com.shenit.commons.utils.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import com.shenit.commons.utils.CollectionUtils;
-import com.shenit.commons.utils.GsonUtils;
-import com.shenit.commons.utils.MapUtils;
 
 public class ResponseData implements Serializable,JsonSerializable{
 	private static final long serialVersionUID = 5921390031018921328L;
@@ -67,7 +66,7 @@ public class ResponseData implements Serializable,JsonSerializable{
 	
 	/**
 	 * Get fields.
-	 * @param fieldRecords
+	 * @param key
 	 * @return
 	 */
     public Object get(String key) {
@@ -139,7 +138,7 @@ public class ResponseData implements Serializable,JsonSerializable{
 
     @Override
     public String toJson() {
-        return GsonUtils.toJson(data);
+        return GsonUtils.format(data);
     }
     
     /**

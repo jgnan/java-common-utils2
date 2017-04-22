@@ -1,13 +1,13 @@
 package com.shenit.commons.utils;
 
+import com.google.common.reflect.TypeToken;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.reflect.TypeToken;
 
 
 /**
@@ -53,7 +53,7 @@ public class ClassUtils {
 					|| obj instanceof Double){
 				objValue = (String) obj;// 基础类型 直接赋值
 			}else{
-				objValue = GsonUtils.toJson(obj);// 特殊类型 转换为json
+				objValue = GsonUtils.format(obj);// 特殊类型 转换为json
 			}
 		} catch (Exception e) { e.printStackTrace(); }
 		

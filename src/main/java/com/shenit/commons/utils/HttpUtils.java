@@ -17,55 +17,19 @@
  **********************************************************************************************************************/
 package com.shenit.commons.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.google.common.net.MediaType;
+import com.shenit.commons.mvc.model.JsonSerializable;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
@@ -80,8 +44,14 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.net.MediaType;
-import com.shenit.commons.mvc.model.JsonSerializable;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 public final class HttpUtils {
     private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
@@ -197,8 +167,6 @@ public final class HttpUtils {
      * 
      * @param url
      *            地址
-     * @param limit
-     *            响应内容显示长度限制
      * @return
      */
     public static String getAsString(String url) {
@@ -263,12 +231,12 @@ public final class HttpUtils {
     /**
      * Request url result with get method
      * 
-     * @param url
-     *            URL
+     * @param request
+     * @param cTimeout
+     * @param sotimeout
      * @return
      */
-    public static String execute(HttpRequestBase request, int cTimeout,
-                    int sotimeout) {
+    public static String execute(HttpRequestBase request, int cTimeout,int sotimeout) {
         return execute(request, null, cTimeout, sotimeout);
     }
     
@@ -287,8 +255,11 @@ public final class HttpUtils {
     /**
      * Request url result with get method
      * 
-     * @param url
-     *            URL
+     * @param request
+     * @param context
+     * @param proxy
+     * @param cTimeout
+     * @param soTimeout
      * @return
      */
     public static String execute(HttpRequestBase request, HttpContext context, HttpHost proxy,int cTimeout,int soTimeout) {
@@ -710,10 +681,11 @@ public final class HttpUtils {
     /**
      * 批量写入一堆cookie
      * 
+     * @param req
      * @param resp
-     * @param copyToSession
+     * @param andSession
      *            是否同时创建到session
-     * @param cookies
+     * @param names
      */
     public static void purge(HttpServletRequest req, HttpServletResponse resp,
                     boolean andSession, String... names) {
@@ -753,7 +725,7 @@ public final class HttpUtils {
      * 
      * @param req
      *            请求
-     * @param name
+     * @param names
      *            cookie名称
      */
     public static void purgeCookies(HttpServletRequest req, HttpServletResponse resp, String... names) {
@@ -1064,7 +1036,7 @@ public final class HttpUtils {
             for (int i = 0; i < cookies.length; i++) {
                 cookie = cookies[i];
                 builder.append(cookie.getName()).append(column)
-                                .append(GsonUtils.toJson(cookie)).append(rtn);
+                                .append(GsonUtils.format(cookie)).append(rtn);
             }
         }
         builder.append("BODY:\n");
@@ -1285,7 +1257,7 @@ public final class HttpUtils {
             builder.append(hasQuery ? AMP : QUERY_CHAR);
             if (!hasQuery) hasQuery = true;
             val = kv.getValue();
-            builder.append(kv.getKey()).append(EQ).append(DataUtils.isPrimative(val) ? val.toString() : GsonUtils.toJson(val));
+            builder.append(kv.getKey()).append(EQ).append(DataUtils.isPrimative(val) ? val.toString() : GsonUtils.format(val));
         }
         return builder.toString();
     }

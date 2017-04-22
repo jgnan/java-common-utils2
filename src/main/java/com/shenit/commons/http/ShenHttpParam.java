@@ -162,7 +162,7 @@ public class ShenHttpParam extends TreeMap<String,List<Object>>{
      * @return
      */
     public <T> T getJson(String key, Class<T> clazz) {
-        return GsonUtils.fromJson(getParam(key), clazz);
+        return GsonUtils.parse(getParam(key), clazz);
     }
     /**
      * Get by type.
@@ -171,6 +171,6 @@ public class ShenHttpParam extends TreeMap<String,List<Object>>{
      * @return
      */
     public <T> T getJson(String key, Type type) {
-        return GsonUtils.fromJson(getParam(key), type);
+        return GsonUtils.parse(getParam(key), type);
     }
 }
